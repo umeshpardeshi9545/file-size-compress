@@ -4,6 +4,10 @@ import io
 
 def resize_and_compress_image(input_image_path, output_path, target_size, size_unit):
     with Image.open(input_image_path) as img:
+        # Convert RGBA to RGB
+        if img.mode == 'RGBA':
+            img = img.convert('RGB')
+        
         # Resize to a reasonable display size while maintaining aspect ratio
         max_width, max_height = 800, 800
         img.thumbnail((max_width, max_height))
