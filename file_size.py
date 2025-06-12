@@ -1,12 +1,12 @@
 import streamlit as st
 from PIL import Image
-import os
 import io
 
-def compress_image(input_image_path, output_path, target_size, size_unit):
+def resize_and_compress_image(input_image_path, output_path, target_size, size_unit):
     with Image.open(input_image_path) as img:
-        # Ensure image is in a format that supports compression options
-        img = img.convert("RGB")
+        # Resize to a reasonable display size while maintaining aspect ratio
+        max_width, max_height = 800, 800
+        img.thumbnail((max_width, max_height))
 
         # Convert target size to bytes
         target_size_bytes = target_size * 1024 if size_unit == 'KB' else target_size * 1024 * 1024
@@ -40,9 +40,8 @@ def main():
             with open(input_path, "wb") as f:
                 f.write(uploaded_file.getbuffer())
             
-            # Compress image and handle any errors
             try:
-                compressed_image_path = compress_image(input_path, output_path, target_size, size_unit_option)
+                compressed_image_path = resize_and_compress_image(input_path, output_path, target_size, size_unit_option)
                 st.success("Image compressed successfully!")
                 st.download_button(
                     label="Download Compressed Image",
