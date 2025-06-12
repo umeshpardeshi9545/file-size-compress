@@ -1,7 +1,7 @@
 import streamlit as st
 from PIL import Image
 import io
-
+import os
 def resize_and_compress_image(input_image_path, output_path, target_size, size_unit):
     with Image.open(input_image_path) as img:
         # Convert RGBA to RGB
